@@ -1,0 +1,37 @@
+{
+  "name": "Laravel Development Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "laravel",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "if [ -f composer.json ]; then composer install && npm install && npm run build; else echo 'No composer.json found. Run \"laravel new my-app\" to create a new Laravel project.'; fi",
+  "updateContentCommand": "if [ -f composer.json ]; then composer install && npm install && npm run build; fi",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-json",
+        "laravel.vscode-laravel",
+        "xdebug.php-debug",
+        "Anthropic.claude-code",
+        "DEVSENSE.phptools-vscode"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "php.debug.executablePath": "/usr/local/bin/php"
+      }
+    }
+  },
+  "forwardPorts": [8000, 3306],
+  "portsAttributes": {
+    "8000": {
+      "label": "Laravel Application",
+      "onAutoForward": "notify"
+    },
+    "3306": {
+      "label": "MySQL Database",
+      "onAutoForward": "silent"
+    }
+  }
+}
